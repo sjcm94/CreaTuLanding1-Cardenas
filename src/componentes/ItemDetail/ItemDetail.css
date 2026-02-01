@@ -1,0 +1,9 @@
+.contenedorItem {
+    text-align: left;
+    border: solid 1px black;
+    margin: 4rem;
+}
+
+img {
+    max-width: 500px;
+}

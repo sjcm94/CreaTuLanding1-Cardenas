@@ -1,0 +1,13 @@
+img {
+    border: solid 1px red;
+    object-fit: contain;
+}
+
+.cardProducto {
+    background-color: aquamarine;
+    width: 20rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}

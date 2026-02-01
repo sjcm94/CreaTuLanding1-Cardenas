@@ -1,15 +1,23 @@
 import './App.css'
+import ItemDetailContainer from './componentes/ItemDetailContainer/ItemDetailContainer';
 import ItemListContainer from './componentes/ItemListContainer/ItemListContainer'
 import NavBar from './componentes/NavBar/NavBar'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 function App() {
   
-  const mensaje = "Este lugar estará lleno de libros misteriosos... 😱";
 
   return (
     <>
+     <BrowserRouter>
       <NavBar/>
-      <ItemListContainer aviso={mensaje}/>
+      <Routes>
+        <Route path="/" element={<ItemListContainer/>}/>
+        <Route path="/categoria/:idCategoria" element={<ItemListContainer/>} />
+        <Route path="/item/:idItem" element={<ItemDetailContainer/>} />
+      </Routes>
+
+     </BrowserRouter>
     </>
   )
 
