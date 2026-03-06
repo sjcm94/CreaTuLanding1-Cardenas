@@ -1,27 +1,42 @@
 import "./ItemListContainer.css"
 import { useState, useEffect } from 'react'
-import { getProductos, getProductosPorCategoria } from '../../asyncmock'
 import ItemList from '../ItemList/ItemList'
+import Loader from '../Loader/Loader'
 import { useParams } from 'react-router-dom'
+import { db } from "../../services/config"
+import { collection, getDocs, query, where } from "firebase/firestore"
+
 
 const ItemListContainer = () => {
 
-   const [productos, setProductos] = useState([])
+  const [productos, setProductos] = useState([])
+  const [loading, setLoading] = useState(false)
 
-   const {idCategoria} = useParams()
+  const { idCategoria } = useParams()
 
-   useEffect(()=>{
-    const funcionProductos = idCategoria ? getProductosPorCategoria : getProductos
+  useEffect(() => {
+    setLoading(true)
+    const misProductos = idCategoria ? query(collection(db, "libreria"), where("idCat", "==", idCategoria)) : collection(db, "libreria")
 
-    funcionProductos(idCategoria)
-    .then(res=> setProductos(res))
-    
-   },[idCategoria])
+    getDocs(misProductos)
+      .then(res => {
+        const nuevosProductos = res.docs.map(doc => {
+          const data = doc.data()
+          return { id: doc.id, ...data }
+        })
+        setProductos(nuevosProductos)
+      })
+      .catch(error => console.log(error))
+      .finally(()=>{
+        console.log("Proceso terminado")
+        setLoading(false)
+      })
+  }, [idCategoria])
 
   return (
     <>
-     <h2>Mis Libros</h2>
-     <ItemList productos={productos} />
+      <h2>Mis Libros</h2>
+      {loading ? <Loader/> : <ItemList productos={productos}/>}
     </>
   )
 }

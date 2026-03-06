@@ -1,12 +1,12 @@
-import React from 'react'
 import "./ItemDetail.css"
 import ItemCount from "../ItemCount/ItemCount"
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CarritoContext} from '../../context/CarritoContext'
 import { useContext } from 'react'
+import { toast } from "react-toastify"
 
-export const ItemDetail = ({ id, nombre, autor, precio, img, idCat, stock }) => {
+export const ItemDetail = ({ id, nombre, autor, precio, img, idCat, stock, desc }) => {
 
 //Estado local con la cantidad de productos agregados
 
@@ -22,7 +22,11 @@ const manejadorCantidad = (cantidad) => {
     //Se crea objeto con el item y la cantidad
     const item= {id, nombre, precio}
     agregarAlCarrito(item, cantidad) 
+    toast.success("Su compra fue enviada al carrito", {
+       autoClose:1000, theme: "dark" , position: "top-center"
+    })
 }
+
 
     return (
         <div className='contenedorItem'>
@@ -31,9 +35,7 @@ const manejadorCantidad = (cantidad) => {
             <h4>Precio: {precio}</h4>
             <h5>ID: {id}</h5>
             <img src={img} alt={nombre} />
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus doloremque,
-            magni nemo assumenda aut voluptas sequi cupiditate, harum deserunt perspiciatis repellendus,
-            quibusdam odio iure laudantium optio quia quod explicabo architecto!</p>
+            <p>{desc}</p>
             <i>Categoría: {idCat}</i>
 
             {/*Lógica de montaje y desmontaje del contador*/}
